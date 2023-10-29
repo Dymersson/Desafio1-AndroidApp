@@ -1,0 +1,94 @@
+activity_main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/gasolina"
+        android:layout_gravity="center"
+        android:contentDescription="ícone de gasolina"/>
+
+    <EditText
+        android:id="@+id/etanolEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Preço do Etanol"
+        android:inputType="numberDecimal"
+        android:layout_marginTop="16dp"/>
+
+    <EditText
+        android:id="@+id/gasolinaEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Preço da Gasolina"
+        android:inputType="numberDecimal"
+        android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/calcularButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Calcular"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/resultadoTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Resultado"
+        android:textSize="18sp"
+        android:gravity="center"/>
+
+</LinearLayout>
+
+//
+
+MainActivity.kt
+
+package com.example.desafio1
+
+import androidx.appcompat.app.AppCompatActivity
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.ImageView
+import android.os.Bundle
+
+
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val etanolEditText: EditText = findViewById(R.id.etanolEditText)
+        val gasolinaEditText: EditText = findViewById(R.id.gasolinaEditText)
+        val calcularButton: Button = findViewById(R.id.calcularButton)
+        val resultadoTextView: TextView = findViewById(R.id.resultadoTextView)
+
+        val imageView = ImageView(this)
+        imageView.setImageResource(R.drawable.gasolina)
+
+        calcularButton.setOnClickListener {
+            val precoEtanol = etanolEditText.text.toString().toDoubleOrNull() ?: 0.0
+            val precoGasolina = gasolinaEditText.text.toString().toDoubleOrNull() ?: 0.0
+
+            val resultado = precoEtanol / precoGasolina
+            val limiteVantagem = 0.7
+
+            if (resultado < limiteVantagem) {
+                resultadoTextView.text = "É mais vantajoso abastecer com Etanol."
+            } else {
+                resultadoTextView.text = "É mais vantajoso abastecer com Gasolina."
+            }
+        }
+    }
+}
+
